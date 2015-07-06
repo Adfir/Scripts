@@ -19,6 +19,11 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
     const XML_PATH_GOOGLE_ANALYTICS = 'google/analytics/account';
 
     /**
+     * Path to cookie domain in core_config_data
+     */
+    const XML_PATH_COOKIE_DOMAIN = 'web/cookie/cookie_domain';
+
+    /**
      * Websites cache
      *
      * @var array
@@ -53,6 +58,7 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
         $this->setShippingMethods();
         $this->setCustom();
         $this->removeCustomersData();
+        $this->applyChanges();
     }
 
     protected function setBaseUrls(){
@@ -66,8 +72,11 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
         $this->setConfigGlobally(self::XML_PATH_GOOGLE_ANALYTICS, self::GOOGLE_ANALYTHICS_ACCOUN_ID);
     }
 
+    /**
+     * Remove cookie domain in core_config_data
+     */
     protected function removeCookieDomain() {
-
+        $this->setConfigGlobally(self::XML_PATH_COOKIE_DOMAIN, '');
     }
 
     protected function disableIndexing(){
@@ -117,6 +126,7 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
      * Clear cache and reload configuration
      */
     protected function applyChanges() {
+        Mage::app()->getCacheInstance()->flush();
         Mage::getConfig()->reinit();
         Mage::app()->reinitStores();
     }
