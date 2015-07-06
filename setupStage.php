@@ -96,8 +96,32 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
         $this->setConfigGlobally(self::XML_PATH_DEFAULT_ROBOTS, self::META_TAG_ROBOTS_VALUE);
     }
 
+    /**
+     * Configure test accounts for payment-methods
+     */
     protected function setPaymentMethods(){
+        $stores = $this->getStores();
+        foreach($stores as $store) {
+            $storeId = $store->getId();
+            $paymentMethods = Mage::getModel('payment/config')->getActiveMethods($storeId);
 
+            foreach($paymentMethods as $paymentMethod){
+                switch ($paymentMethod->getCode()){
+                    case 'authorizenet':
+                        $this->setupAuthorizenet($storeId);
+                        break;
+                    case 'authorizenetcim':
+                        $this->setupAuthorizenetCIM($storeId);
+                        break;
+                    case 'paypal_express':
+                        $this->setupPayPalExpress($storeId);
+                        break;
+                    case 'paypal_global_verisign':
+                        $this->setupPayPalPaymentsPro($storeId);
+                        break;
+                }
+            }
+        }
     }
 
     protected function setShippingMethods(){
@@ -109,6 +133,42 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
     }
 
     protected function removeCustomersData() {
+
+    }
+
+    /**
+     * Configure test account for Authorize.net payment
+     *
+     * @param string $storeId
+     */
+    protected function setupAuthorizenet($storeId){
+
+    }
+
+    /**
+     * Configure test account for Authorize.net CIM payment
+     *
+     * @param string $storeId
+     */
+    protected function setupAuthorizenetCIM($storeId){
+
+    }
+
+    /**
+     * Configure test account for PayPal Express payment method
+     *
+     * @param string $storeId
+     */
+    protected function setupPayPalExpress($storeId){
+
+    }
+
+    /**
+     * Configure test account for PayPal Payflow Pro payment method
+     *
+     * @param string $storeId
+     */
+    protected function setupPayPalPaymentsPro($storeId){
 
     }
 
