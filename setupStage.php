@@ -151,6 +151,12 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
      * @param string $storeId
      */
     protected function setupAuthorizenetCIM($storeId){
+        $configModel = $this->getConfigModel();
+        $configModel->saveConfig('payment/authorizenetcim/test', 1, 'stores', $storeId);
+        $configModel->saveConfig('payment/authorizenetcim/test_gateway_wsdl', 'https://apitest.authorize.net/soap/v1/Service.asmx?WSDL', 'stores', $storeId);
+        $configModel->saveConfig('payment/authorizenetcim/test_gateway_url', 'https://apitest.authorize.net/soap/v1/Service.asmx', 'stores', $storeId);
+        $configModel->saveConfig('payment/authorizenetcim/test_login', Mage::helper('core')->encrypt('9k7Se58M3'), 'stores', $storeId);
+        $configModel->saveConfig('payment/authorizenetcim/test_trans_key', Mage::helper('core')->encrypt('772XZe96cpRa8jX2'), 'stores', $storeId);
 
     }
 
