@@ -14,14 +14,24 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
     const GOOGLE_ANALYTHICS_ACCOUN_ID = 'test';
 
     /**
-     * Path for GA account in core_config_data
+     * Value of <meta name="robots"/> in Head of the page
+     */
+    const META_TAG_ROBOTS_VALUE = 'NOINDEX,NOFOLLOW';
+
+    /**
+     * Xml path to GA account in core_config_data
      */
     const XML_PATH_GOOGLE_ANALYTICS = 'google/analytics/account';
 
     /**
-     * Path to cookie domain in core_config_data
+     * Xml path to cookie domain in core_config_data
      */
     const XML_PATH_COOKIE_DOMAIN = 'web/cookie/cookie_domain';
+
+    /**
+     * Xml path to value used meta-tag name="robots"
+     */
+    const XML_PATH_DEFAULT_ROBOTS= 'design/head/default_robots';
 
     /**
      * Websites cache
@@ -79,8 +89,11 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
         $this->setConfigGlobally(self::XML_PATH_COOKIE_DOMAIN, '');
     }
 
+    /**
+     * Disable indexing by search engines
+     */
     protected function disableIndexing(){
-
+        $this->setConfigGlobally(self::XML_PATH_DEFAULT_ROBOTS, self::META_TAG_ROBOTS_VALUE);
     }
 
     protected function setPaymentMethods(){
