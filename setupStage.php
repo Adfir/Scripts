@@ -9,14 +9,14 @@ require_once 'abstract.php';
 
 class Gorilla_SetupStage extends Mage_Shell_Abstract {
     /**
-     * ID of test account used for GA on stage servers
-     */
-    const GOOGLE_ANALYTHICS_ACCOUN_ID = 'test';
-
-    /**
      * Value of <meta name="robots"/> in Head of the page
      */
     const META_TAG_ROBOTS_VALUE = 'NOINDEX,NOFOLLOW';
+
+    /**
+     * Xml path for config in core_config_data that activates GA
+     */
+    const XML_PATH_GOOGLE_ACTIVE = 'google/analytics/active';
 
     /**
      * Xml path to GA account in core_config_data
@@ -60,26 +60,27 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
      */
     public function run()
     {
-        $this->setBaseUrls();
+        $this->changeBaseUrls();
         $this->removeCookieDomain();
         $this->disableIndexing();
-        $this->setGA();
-        $this->setPaymentMethods();
-        $this->setShippingMethods();
-        $this->setCustom();
+        $this->changeGAConfig();
+        $this->changePaymentMethodsConfig();
+        $this->changeShippingMethodsConfig();
+        $this->addProjectSpecificConfig();
         $this->removeCustomersData();
         $this->applyChanges();
     }
 
-    protected function setBaseUrls(){
+    protected function changeBaseUrls(){
 
     }
 
     /**
      * Update Google Analytics account in order to prevent tracking test data into real account
      */
-    protected function setGA(){
-        $this->setConfigGlobally(self::XML_PATH_GOOGLE_ANALYTICS, self::GOOGLE_ANALYTHICS_ACCOUN_ID);
+    protected function changeGAConfig(){
+        $this->setConfigGlobally(self::XML_PATH_GOOGLE_ACTIVE, 0);
+        $this->setConfigGlobally(self::XML_PATH_GOOGLE_ANALYTICS, '');
     }
 
     /**
@@ -99,7 +100,7 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
     /**
      * Configure test accounts for payment-methods
      */
-    protected function setPaymentMethods(){
+    protected function changePaymentMethodsConfig(){
         $stores = $this->getStores();
         foreach($stores as $store) {
             $storeId = $store->getId();
@@ -124,11 +125,11 @@ class Gorilla_SetupStage extends Mage_Shell_Abstract {
         }
     }
 
-    protected function setShippingMethods(){
+    protected function changeShippingMethodsConfig(){
 
     }
 
-    protected function setCustom(){
+    protected function addProjectSpecificConfig(){
 
     }
 
